@@ -8,6 +8,7 @@ const ThemeProvider = ({ children }) => {
     secondary: 'dark-secondary',
     background: 'dark-bg',
     color: 'dark-text-primary',
+    colorSecondary: 'text-secondary',
   };
   const light = {
     name: 'light',
@@ -15,6 +16,7 @@ const ThemeProvider = ({ children }) => {
     secondary: 'light-secondary',
     background: 'light-bg',
     color: 'light-text-primary',
+    colorSecondary: 'text-secondary',
   };
   const [mode, setMode] = useState(dark);
   const changeMode = () => {
