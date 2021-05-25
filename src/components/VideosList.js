@@ -1,5 +1,5 @@
 import { React, useContext } from 'react';
-// import Parser from 'html-react-parser';
+import Parser from 'html-react-parser';
 import { Button, Row, Col } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -19,14 +19,9 @@ const VideosList = ({ videos }) => {
         <ul className="container-fluid list-unstyled p-4 m-0">
           <Row className="justify-content-around" md="2">
             {videos.map((video) => (
-              <li key={video.key}>
+              <li key={video.id}>
                 <Col>
-                  <iframe
-                    title="test"
-                    width="100%"
-                    height="300"
-                    src="https://www.youtube.com/embed/Vdxp5H2vOdU"
-                  />
+                  <div className="text-center">{Parser(video.embedHtml)}</div>
                   <h2>{video.title}</h2>
                   <div
                     style={{ fontSize: 15 }}
@@ -41,16 +36,16 @@ const VideosList = ({ videos }) => {
                         className="fs-2 py-2"
                         icon={faThumbsUp}
                       />
-                      <p className="py-1 m-0">{video.like}</p>
+                      <p className="py-1 m-0">{video.likeCount}</p>
                     </div>
                     <div className="d-flex flex-grow-2">
                       <FontAwesomeIcon
                         className="fs-2 py-2"
                         icon={faThumbsDown}
                       />
-                      <p className="py-1 m-0">{video.dislike}</p>
+                      <p className="py-1 m-0">{video.dislikeCount}</p>
                     </div>
-                    <Button className={`btn-${secondary} mx-4`}>
+                    <Button className={`btn-${secondary} mx-3`}>
                       <FontAwesomeIcon icon={faPlus} />
                     </Button>
                   </div>
