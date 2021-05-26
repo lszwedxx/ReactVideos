@@ -1,5 +1,4 @@
 import { React, useContext } from 'react';
-import Parser from 'html-react-parser';
 import { Button, Row, Col } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -21,7 +20,12 @@ const VideosList = ({ videos }) => {
             {videos.map((video) => (
               <li key={video.id}>
                 <Col>
-                  <div className="text-center">{Parser(video.embedHtml)}</div>
+                  <iframe
+                    title="video"
+                    width="100%"
+                    height="300px"
+                    src={`https://youtube.com/embed/${video.id}`}
+                  />
                   <h2>{video.title}</h2>
                   <div
                     style={{ fontSize: 15 }}
