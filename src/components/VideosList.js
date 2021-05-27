@@ -5,10 +5,11 @@ import {
   faThumbsUp,
   faThumbsDown,
   faPlus,
+  faTimes,
 } from '@fortawesome/free-solid-svg-icons';
 import ThemeContext from '../context/ThemeContext';
 
-const VideosList = ({ videos }) => {
+const VideosList = ({ videos, handleClick }) => {
   const { mode } = useContext(ThemeContext);
   const { secondary, colorSecondary } = mode;
   const videosList = videos || [];
@@ -51,6 +52,12 @@ const VideosList = ({ videos }) => {
                     </div>
                     <Button className={`btn-${secondary} mx-3`}>
                       <FontAwesomeIcon icon={faPlus} />
+                    </Button>
+                    <Button
+                      onClick={() => handleClick(video.id)}
+                      className={`btn-danger text-${colorSecondary} mx-3`}
+                    >
+                      <FontAwesomeIcon icon={faTimes} />
                     </Button>
                   </div>
                 </Col>

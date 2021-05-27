@@ -42,41 +42,53 @@ const Main = () => {
       indexEnd !== -1
         ? link.slice(indexStart, indexEnd)
         : link.slice(indexStart);
-    fetch(
-      `https://youtube.googleapis.com/youtube/v3/videos?part=snippet&part=player&part=statistics&id=${videoId}&key=${process.env.REACT_APP_API_KEY}`
-    )
-      .then((res) => res.json())
-      .then((res) => {
-        const {
-          items: [
+    const sameVideo = [...videoParams].filter((video) => video.id === videoId);
+    if (sameVideo.length === 0) {
+      fetch(
+        `https://youtube.googleapis.com/youtube/v3/videos?part=snippet&part=player&part=statistics&id=${videoId}&key=${process.env.REACT_APP_API_KEY}`
+      )
+        .then((res) => res.json())
+        .then((res) => {
+          const {
+            items: [
+              {
+                id,
+                player: { embedHtml },
+                statistics: { viewCount, likeCount, dislikeCount },
+                snippet: { publishedAt, title },
+              },
+            ],
+          } = res;
+          const dateIndex = publishedAt.indexOf('T');
+          let date = publishedAt.split('');
+          date.splice(dateIndex);
+          date = date.join('');
+          // Set vidoe params to hook
+          setVideoParams([
+            ...videoParams,
             {
+              embedHtml,
+              viewCount,
+              likeCount,
+              dislikeCount,
+              date,
+              title,
               id,
-              player: { embedHtml },
-              statistics: { viewCount, likeCount, dislikeCount },
-              snippet: { publishedAt, title },
             },
-          ],
-        } = res;
-        const dateIndex = publishedAt.indexOf('T');
-        let date = publishedAt.split('');
-        date.splice(dateIndex);
-        date = date.join('');
-        // Set vidoe params to hook
-        setVideoParams([
-          ...videoParams,
-          {
-            embedHtml,
-            viewCount,
-            likeCount,
-            dislikeCount,
-            date,
-            title,
-            id,
-          },
-        ]);
-        setLink('');
-      })
-      .catch((err) => console.log(err));
+          ]);
+          setLink('');
+        })
+        .catch((err) => console.log(err));
+    } else {
+      setLink('');
+      return false;
+    }
+    return undefined;
+  };
+  // Delete video
+  const deleteVideo = (id) => {
+    const newvideos = [...videoParams].filter((video) => video.id !== id);
+    setVideoParams(newvideos);
   };
   return (
     <Container
@@ -84,7 +96,7 @@ const Main = () => {
       fluid
     >
       <Header input={link} handleChange={handleChange} handleClick={addVidoe} />
-      <VideosList videos={videoParams} />
+      <VideosList videos={videoParams} handleClick={deleteVideo} />
     </Container>
   );
 };
