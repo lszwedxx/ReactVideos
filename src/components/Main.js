@@ -11,6 +11,8 @@ const Main = () => {
   // Hooks
   const [link, setLink] = useState('');
   const [videoParams, setVideoParams] = useState([]);
+  const [favorite, setFavorite] = useState(false);
+  const [favVideos, setFavVideos] = useState('');
 
   // Take all videos from local storage
   useEffect(() => {
@@ -23,7 +25,9 @@ const Main = () => {
   // Set videos to local storage
   useEffect(() => {
     localStorage.setItem('link', JSON.stringify(videoParams));
-  });
+    setFavVideos(videoParams.filter((video) => video.favorite));
+    console.log('render');
+  }, [videoParams]);
 
   // Handle input value
   const handleChange = (e) => {
@@ -67,6 +71,7 @@ const Main = () => {
           setVideoParams([
             ...videoParams,
             {
+              favorite: false,
               embedHtml,
               viewCount,
               likeCount,
@@ -87,16 +92,39 @@ const Main = () => {
   };
   // Delete video
   const deleteVideo = (id) => {
-    const newvideos = [...videoParams].filter((video) => video.id !== id);
-    setVideoParams(newvideos);
+    const newVideos = [...videoParams].filter((video) => video.id !== id);
+    setVideoParams(newVideos);
+  };
+
+  // Toggle favorite videos
+  const toggleVideos = () => {
+    setFavorite((prevState) => !prevState);
+  };
+  // Add video to favorites
+  const addFavorite = (id) => {
+    const newVideos = [...videoParams].map((video) =>
+      video.id === id ? { ...video, favorite: true } : video
+    );
+    setVideoParams(newVideos);
   };
   return (
     <Container
       className={`bg-${background} text-${color} p-0 min-vh-100`}
       fluid
     >
-      <Header input={link} handleChange={handleChange} handleClick={addVidoe} />
-      <VideosList videos={videoParams} handleClick={deleteVideo} />
+      <Header
+        input={link}
+        handleChange={handleChange}
+        handleClick={addVidoe}
+        handleToggle={toggleVideos}
+      />
+      <VideosList
+        videos={videoParams}
+        handleClick={deleteVideo}
+        favorite={favorite}
+        addFavorite={addFavorite}
+        favVideos={favVideos}
+      />
     </Container>
   );
 };

@@ -2,7 +2,7 @@ import { React, useContext } from 'react';
 import { Form, FormGroup, Button, Input, Row, Col } from 'reactstrap';
 import ThemeContext from '../context/ThemeContext';
 
-const Header = ({ input, handleChange, handleClick }) => {
+const Header = ({ input, handleChange, handleClick, handleToggle }) => {
   const { changeMode, mode } = useContext(ThemeContext);
   const { name, primary, secondary } = mode;
   return (
@@ -30,7 +30,11 @@ const Header = ({ input, handleChange, handleClick }) => {
               </Button>
             </Col>
             <Col xs="auto">
-              <Input className={`btn-${secondary}`} type="select">
+              <Input
+                onChange={handleToggle}
+                className={`btn-${secondary}`}
+                type="select"
+              >
                 <option>All</option>
                 <option>Favorites</option>
               </Input>

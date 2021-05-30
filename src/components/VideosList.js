@@ -9,16 +9,22 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import ThemeContext from '../context/ThemeContext';
 
-const VideosList = ({ videos, handleClick }) => {
+const VideosList = ({
+  videos,
+  handleClick,
+  addFavorite,
+  favorite,
+  favVideos,
+}) => {
   const { mode } = useContext(ThemeContext);
   const { secondary, colorSecondary } = mode;
-  const videosList = videos || [];
+  const videosList = favorite ? favVideos || [] : videos || [];
   return (
     <div className="container-fluid ">
       {videosList.length > 0 ? (
         <ul className="container-fluid list-unstyled p-4 m-0">
           <Row className="justify-content-around" md="2">
-            {videos.map((video) => (
+            {videosList.map((video) => (
               <li key={video.id}>
                 <Col>
                   <iframe
@@ -50,7 +56,10 @@ const VideosList = ({ videos, handleClick }) => {
                       />
                       <p className="py-1 m-0">{video.dislikeCount}</p>
                     </div>
-                    <Button className={`btn-${secondary} mx-3`}>
+                    <Button
+                      onClick={() => addFavorite(video.id)}
+                      className={`btn-${secondary} mx-3`}
+                    >
                       <FontAwesomeIcon icon={faPlus} />
                     </Button>
                     <Button
