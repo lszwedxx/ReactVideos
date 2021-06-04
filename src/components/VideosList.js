@@ -18,7 +18,7 @@ const VideosList = ({
 }) => {
   const { mode } = useContext(ThemeContext);
   const { secondary, colorSecondary } = mode;
-  const videosList = favorite ? favVideos || [] : videos || [];
+  const videosList = favorite ? favVideos : videos;
   return (
     <div className="container-fluid ">
       {videosList.length > 0 ? (

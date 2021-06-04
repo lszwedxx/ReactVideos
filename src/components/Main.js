@@ -1,5 +1,5 @@
 import { React, useContext, useState, useEffect } from 'react';
-import { Container } from 'reactstrap';
+import { Container, Modal, Button, ModalBody, ModalFooter } from 'reactstrap';
 import Header from './Header';
 import VideosList from './VideosList';
 import ThemeContext from '../context/ThemeContext';
@@ -7,12 +7,13 @@ import ThemeContext from '../context/ThemeContext';
 const Main = () => {
   // Global context variable
   const { mode } = useContext(ThemeContext);
-  const { background, color } = mode;
+  const { background, color, secondary } = mode;
   // Hooks
   const [link, setLink] = useState('');
   const [videoParams, setVideoParams] = useState([]);
   const [favorite, setFavorite] = useState(false);
-  const [favVideos, setFavVideos] = useState('');
+  const [favVideos, setFavVideos] = useState([]);
+  const [modal, setModal] = useState(false);
 
   // Take all videos from local storage
   useEffect(() => {
@@ -26,7 +27,6 @@ const Main = () => {
   useEffect(() => {
     localStorage.setItem('link', JSON.stringify(videoParams));
     setFavVideos(videoParams.filter((video) => video.favorite));
-    console.log('render');
   }, [videoParams]);
 
   // Handle input value
@@ -83,7 +83,10 @@ const Main = () => {
           ]);
           setLink('');
         })
-        .catch((err) => console.log(err));
+        .catch(() => {
+          setLink('');
+          setModal(true);
+        });
     } else {
       setLink('');
       return false;
@@ -107,6 +110,9 @@ const Main = () => {
     );
     setVideoParams(newVideos);
   };
+  // Toggle Modal
+  const toggle = () => setModal(!modal);
+
   return (
     <Container
       className={`bg-${background} text-${color} p-0 min-vh-100`}
@@ -125,6 +131,16 @@ const Main = () => {
         addFavorite={addFavorite}
         favVideos={favVideos}
       />
+      <Modal isOpen={modal} toggle={toggle} className={`bg-${background}`}>
+        <ModalBody className={`bg-${background} text-${color}`}>
+          Ups Something goes wrong. Please check Your Link
+        </ModalBody>
+        <ModalFooter className={`bg-${background} text-${color}`}>
+          <Button className={`btn-${secondary}`} onClick={toggle}>
+            Close
+          </Button>
+        </ModalFooter>
+      </Modal>
     </Container>
   );
 };
