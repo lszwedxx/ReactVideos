@@ -1,3 +1,7 @@
+# Description
+
+Simple app to store movies from Youtube in localStorage , created with react react-strap and Youtube API. Everything you need is copy movie link and put it in input form and click Add button.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
