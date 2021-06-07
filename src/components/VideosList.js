@@ -12,7 +12,7 @@ import ThemeContext from '../context/ThemeContext';
 const VideosList = ({
   videos,
   handleClick,
-  addFavorite,
+  toggleFavorite,
   favorite,
   favVideos,
 }) => {
@@ -57,8 +57,10 @@ const VideosList = ({
                       <p className="py-1 m-0">{video.dislikeCount}</p>
                     </div>
                     <Button
-                      onClick={() => addFavorite(video.id)}
-                      className={`btn-${secondary} mx-3`}
+                      onClick={() => toggleFavorite(video.id)}
+                      className={`btn-${secondary} mx-3 ${
+                        video.favorite === true ? `text-success` : null
+                      }`}
                     >
                       <FontAwesomeIcon icon={faPlus} />
                     </Button>

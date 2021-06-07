@@ -104,10 +104,16 @@ const Main = () => {
     setFavorite((prevState) => !prevState);
   };
   // Add video to favorites
-  const addFavorite = (id) => {
-    const newVideos = [...videoParams].map((video) =>
-      video.id === id ? { ...video, favorite: true } : video
-    );
+  const toggleFavorite = (id) => {
+    const newVideos = [...videoParams].map((video) => {
+      if (video.id === id && video.favorite === false) {
+        return { ...video, favorite: true };
+      }
+      if (video.id === id && video.favorite === true) {
+        return { ...video, favorite: false };
+      }
+      return video;
+    });
     setVideoParams(newVideos);
   };
   // Toggle Modal
@@ -128,7 +134,7 @@ const Main = () => {
         videos={videoParams}
         handleClick={deleteVideo}
         favorite={favorite}
-        addFavorite={addFavorite}
+        toggleFavorite={toggleFavorite}
         favVideos={favVideos}
       />
       <Modal isOpen={modal} toggle={toggle} className={`bg-${background}`}>
